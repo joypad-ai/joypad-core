@@ -287,6 +287,12 @@ static void switch2_cleanup_on_disconnect(void);
 
 #define MAX_CLASSIC_CONNECTIONS 4
 #define INQUIRY_DURATION 5  // Inquiry duration in 1.28s units
+// Number of active Classic links. Distinct from
+// btstack_classic_get_connection_count(), which deliberately sums Classic AND
+// BLE for LED/status purposes; decisions about Classic scanning must not be
+// influenced by an unrelated BLE peer.
+static uint8_t classic_link_count(void);
+
 #define CLASSIC_CONNECT_TIMEOUT_MS 15000  // Max time to establish HID connection
 
 typedef struct {
@@ -1370,8 +1376,13 @@ void btstack_host_process(void)
         !hid_state.scan_active &&
         classic_state.waiting_for_incoming_time == 0 &&
         !classic_state.pending_valid &&
-        btstack_classic_get_connection_count() == 0) {
-        printf("[BTSTACK_HOST] Safety: idle with no connections, resuming scan\n");
+        // Classic links only. The combined count includes BLE, so one
+        // unrelated BLE HID device in range (a TV remote, a keyboard) holds
+        // this gate shut forever: Classic inquiry never resumes, and since the
+        // Classic auto-connect path is gated on classic_state.inquiry_active, a
+        // bonded Classic pad can then never be rediscovered after it powers off.
+        classic_link_count() == 0) {
+        printf("[BTSTACK_HOST] Safety: idle with no Classic links, resuming scan\n");
         btstack_host_start_scan();
     }
 #endif
@@ -5512,6 +5523,28 @@ static void hid_host_packet_handler(uint8_t packet_type, uint16_t channel, uint8
             if (conn) {
                 conn->hid_ready = true;
 
+                // PnP (Device ID) SDP query for the hid_host path.
+                //
+                // The only other call site is gated on
+                //     classic_state.pending_hid_connect && wiimote_conn.active
+                // i.e. the direct-L2CAP path, so a pad that comes up through
+                // HID Host is never queried and product_id stays 0. The
+                // remote-name handler then fills in vendor_id from the name
+                // profile default while bt_device_wiimote_pid_from_name()
+                // returns 0 for non-Wiimotes, leaving 054C:0000 for a
+                // DualSense -- which ds5_match() rejects, so the looser
+                // ds4_match() claims it and the pad produces no input.
+                if (conn->product_id == 0) {
+                    memcpy(classic_state.pending_addr, conn->addr, 6);
+                    classic_state.pending_vid = 0;
+                    classic_state.pending_pid = 0;
+                    uint8_t sdp_rc = sdp_client_query_uuid16(
+                        &sdp_query_vid_pid_callback, conn->addr,
+                        BLUETOOTH_SERVICE_CLASS_PNP_INFORMATION);
+                    printf("[BTSTACK_HOST] PnP SDP query for '%s': status=0x%02X\n",
+                           conn->name, sdp_rc);
+                }
+
                 // Check if this is a direct-L2CAP device by profile or name
                 bool is_direct_l2cap = (conn->profile &&
                                         conn->profile->classic == BT_CLASSIC_DIRECT_L2CAP);
@@ -6210,6 +6243,15 @@ bool btstack_classic_get_connection(uint8_t conn_index, btstack_classic_conn_inf
     info->is_ble = false;
 
     return true;
+}
+
+static uint8_t classic_link_count(void)
+{
+    uint8_t n = 0;
+    for (int i = 0; i < MAX_CLASSIC_CONNECTIONS; i++) {
+        if (classic_state.connections[i].active) n++;
+    }
+    return n;
 }
 
 // Get number of active connections (Classic + BLE)
