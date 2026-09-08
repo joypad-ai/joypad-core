@@ -285,20 +285,24 @@ static uint8_t ds5_mode_get_rumble(void)
 // so the pattern round-trips identically to how we drive a connected pad.
 static uint8_t ds5_playerled_pattern_to_number(uint8_t pattern)
 {
-    switch (pattern & 0x1F) {
-        case LED_P1_PATTERN: return 1;
-        case LED_P2_PATTERN: return 2;
-        case LED_P3_PATTERN: return 3;
-        case LED_P4_PATTERN: return 4;
-        case LED_P5_PATTERN: return 5;
+    // if/else (not switch) so this compiles for every app: LED_Px_PATTERN values
+    // are per-app and may collide (which a switch rejects as duplicate cases), and
+    // the higher slots are optional. First match wins; unknown -> 0.
+    uint8_t p = pattern & 0x1F;
+    if (p == LED_P1_PATTERN) return 1;
+    if (p == LED_P2_PATTERN) return 2;
+    if (p == LED_P3_PATTERN) return 3;
+    if (p == LED_P4_PATTERN) return 4;
+#ifdef LED_P5_PATTERN
+    if (p == LED_P5_PATTERN) return 5;
+#endif
 #ifdef LED_P6_PATTERN
-        case LED_P6_PATTERN: return 6;
+    if (p == LED_P6_PATTERN) return 6;
 #endif
 #ifdef LED_P7_PATTERN
-        case LED_P7_PATTERN: return 7;
+    if (p == LED_P7_PATTERN) return 7;
 #endif
-        default: return 0;  // unrecognized / off
-    }
+    return 0;  // unrecognized / off
 }
 
 static bool ds5_mode_get_feedback(output_feedback_t* fb)
