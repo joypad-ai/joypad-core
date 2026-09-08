@@ -100,6 +100,11 @@ static const char* get_device_name(const input_event_t* event) {
     switch (event->transport) {
 #ifndef DISABLE_USB_HOST
         case INPUT_TRANSPORT_USB: {
+            uint16_t vid, pid;
+            if (tuh_vid_pid_get(event->dev_addr, &vid, &pid) &&
+                vid == 0x8086 && pid == 0xc013) {
+                return "Intel Wireless Series Gamepad";
+            }
             int ctrl_type = hid_get_ctrl_type(event->dev_addr, event->instance);
             if (ctrl_type >= 0 && ctrl_type < CONTROLLER_TYPE_COUNT &&
                 device_interfaces[ctrl_type] && device_interfaces[ctrl_type]->name) {

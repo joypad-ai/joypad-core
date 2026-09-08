@@ -5,6 +5,7 @@
 
 #include "usbh.h"
 #include "tusb.h"
+#include "intel/intel_wireless_series.h"
 #include "core/services/players/manager.h"
 #include "core/services/codes/codes.h"
 #include <stdio.h>
@@ -208,6 +209,10 @@ void usbh_task(void)
     tuh_task();
 #endif
 
+#if CFG_TUH_ENABLED
+    intel_wireless_series_task();
+#endif
+
 #if CFG_TUH_XINPUT
     xinput_task();
 #endif
@@ -243,6 +248,11 @@ void tuh_umount_cb(uint8_t dev_addr)
     printf("A device with address %d is unmounted\r\n", dev_addr);
     if (usb_host_device_count > 0) usb_host_device_count--;
 
+#if CFG_TUH_ENABLED
+    // TinyUSB invokes this before class close. Preserve player mappings
+    // until the receiver has cleared every RF slot's routed output.
+    intel_wireless_series_disconnect(dev_addr);
+#endif
     remove_players_by_address(dev_addr, -1);
 
     // Reset test mode when device disconnects

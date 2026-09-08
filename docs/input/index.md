@@ -10,6 +10,7 @@ Every input -- whether a USB gamepad, a Bluetooth controller, a SNES pad wired d
 |-------|----------|----------|--------|-------|
 | USB HID | USB 2.0 | `src/usb/usbh/hid/` | TinyUSB host stack | Gamepads, keyboards, mice, hubs. Vendor-specific drivers for Xbox, PlayStation, Nintendo, 8BitDo, HORI, Logitech, Sega, Raphnet, and more. |
 | XInput | USB 2.0 | `src/usb/usbh/xinput/` | TinyUSB host stack | Xbox 360, Xbox One, Xbox Series controllers via XInput protocol. |
+| [Intel Wireless Series](../INTEL_WIRELESS_SERIES.md) | USB receiver / RF | `src/usb/usbh/intel/` | Custom TinyUSB host driver | Original `8086:C013` base station, gamepad activation and eight independent RF slots. |
 | Bluetooth | BT Classic + BLE | `src/bt/` | BTstack | Wireless controllers via USB BT dongle (RP2040), built-in radio (Pico W), or BLE (ESP32-S3, nRF52840). Per-vendor drivers mirror USB HID structure. |
 | WiFi (JOCP) | UDP/TCP over WiFi | `src/wifi/jocp/` | LWIP | Joypad Open Controller Protocol. Adapter runs as WiFi AP on Pico W. UDP port 30100 for input, TCP port 30101 for control. |
 | SNES | Shift register (GPIO) | `src/native/host/snes/` | GPIO polling | SNES and NES controllers, SNES mouse, Xband keyboard. Also used for NES via compatible shift register protocol. |

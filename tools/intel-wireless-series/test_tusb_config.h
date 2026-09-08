@@ -1,0 +1,8 @@
+#pragma once
+#define CFG_TUSB_MCU OPT_MCU_NONE
+#define CFG_TUSB_OS OPT_OS_NONE
+#define CFG_TUSB_RHPORT0_MODE OPT_MODE_HOST
+#define CFG_TUH_DEVICE_MAX 2
+#define CFG_TUH_ENDPOINT_MAX 8
+#define CFG_TUH_INTERFACE_MAX 8
+#define CFG_TUSB_MEM_ALIGN __attribute__((aligned(4)))

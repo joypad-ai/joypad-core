@@ -88,6 +88,7 @@ elseif(CONFIG_APP STREQUAL "usb2usb")
 
         # --- USB Host layer ---
         "${SHARED_SRC}/usb/usbh/usbh.c"
+        "${SHARED_SRC}/usb/usbh/intel/intel_wireless_series.c"
         "${SHARED_SRC}/usb/usbh/hid/hid.c"
         "${SHARED_SRC}/usb/usbh/hid/hid_registry.c"
         "${SHARED_SRC}/usb/usbh/hid/hid_utils.c"
@@ -163,6 +164,7 @@ elseif(CONFIG_APP STREQUAL "btusb2usb")
 
         # --- USB Host layer ---
         "${SHARED_SRC}/usb/usbh/usbh.c"
+        "${SHARED_SRC}/usb/usbh/intel/intel_wireless_series.c"
         "${SHARED_SRC}/usb/usbh/hid/hid.c"
         "${SHARED_SRC}/usb/usbh/hid/hid_registry.c"
         "${SHARED_SRC}/usb/usbh/hid/hid_utils.c"

@@ -136,6 +136,7 @@ set(CORE_SOURCES
 
 # USB Host sources (HID + X-input)
 set(USB_HOST_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/usb/usbh/intel/intel_wireless_series.c
     ${CMAKE_CURRENT_SOURCE_DIR}/usb/usbh/usbh.c
     ${CMAKE_CURRENT_SOURCE_DIR}/usb/usbh/hid/hid.c
     ${CMAKE_CURRENT_SOURCE_DIR}/usb/usbh/hid/hid_utils.c

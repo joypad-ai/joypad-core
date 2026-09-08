@@ -131,6 +131,7 @@ SRC_C += $(JOYPAD)/apps/usb2usb/app.c
 # --- USB Host layer ---
 SRC_C += \
 	$(JOYPAD)/usb/usbh/usbh.c \
+	$(JOYPAD)/usb/usbh/intel/intel_wireless_series.c \
 	$(JOYPAD)/usb/usbh/hid/hid.c \
 	$(JOYPAD)/usb/usbh/hid/hid_registry.c \
 	$(JOYPAD)/usb/usbh/hid/hid_utils.c \

@@ -9,6 +9,7 @@
 #include "core/router/router.h"
 #include "xinput_host.h"
 #include "chatpad.h"
+#include "usb/usbh/intel/intel_wireless_series.h"
 #include "core/input_event.h"
 #include "usb/usbd/usbd.h"  // for usbd_get_mode() / USB_OUTPUT_MODE_XBONE
 
@@ -44,12 +45,12 @@ uint8_t byteScaleAnalog(int16_t xbox_val);
 // Custom USB Host Drivers
 //--------------------------------------------------------------------+
 
-#if CFG_TUH_XINPUT || CFG_TUH_BTD
+#if CFG_TUH_ENABLED
 #include <string.h>
 
 // Count how many drivers we have
 enum {
-    CUSTOM_DRIVER_COUNT = 0
+    CUSTOM_DRIVER_COUNT = 1 // Intel Wireless Series receiver
 #if CFG_TUH_XINPUT
     + 1
 #endif
@@ -59,13 +60,14 @@ enum {
 };
 
 // Static storage for driver array (not const so we can memcpy into it)
-static uint8_t custom_driver_storage[CUSTOM_DRIVER_COUNT * sizeof(usbh_class_driver_t)];
+static usbh_class_driver_t custom_driver_storage[CUSTOM_DRIVER_COUNT];
 static bool drivers_initialized = false;
 
 usbh_class_driver_t const* usbh_app_driver_get_cb(uint8_t* driver_count) {
     if (!drivers_initialized) {
         usbh_class_driver_t* drivers = (usbh_class_driver_t*)custom_driver_storage;
         int idx = 0;
+        memcpy(&drivers[idx++], &usbh_intel_wireless_series_driver, sizeof(usbh_class_driver_t));
 #if CFG_TUH_XINPUT
         memcpy(&drivers[idx++], &usbh_xinput_driver, sizeof(usbh_class_driver_t));
 #endif
