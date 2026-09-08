@@ -271,6 +271,9 @@ void app_init(void)
             .pin_rst = pad_config->display_rst,
         };
         display_init(&disp_cfg);
+        // Async: display_update() marks dirty and returns; app_task() pushes
+        // one page per iteration so no single iteration blocks on the transfer.
+        display_set_async(true);
         printf("[app:controller] Display initialized\n");
     }
 
@@ -450,6 +453,10 @@ void app_task(void)
 {
     // Process button input for mode switching
     button_task();
+
+    // Push at most one display page per iteration (no-op when nothing is
+    // pending), so the OLED transfer never blocks the input path.
+    display_flush_step();
 
     // Update LED colors when USB output mode changes (skip when peer controls LEDs)
 #ifdef I2C_PEER_ENABLED
