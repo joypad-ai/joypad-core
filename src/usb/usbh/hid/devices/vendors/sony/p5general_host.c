@@ -21,6 +21,14 @@ static uint8_t  ps_instance = 0xFF;
 static uint8_t  f1_num = 0;
 static uint8_t  report_buffer[64];
 
+// The shared auth state is normally owned by the device-side p5general_mode.c
+// (a single instance in RAM shared between the host relay and the device mode).
+// Console-output builds (Nuon, Dreamcast, 3DO, NeoGeo, UART, Jaguar, custom
+// controllers) link this host driver without any USB device mode, so provide a
+// weak fallback definition here. When p5general_mode.c IS linked, its strong
+// definition overrides this and the single shared instance is preserved.
+__attribute__((weak)) p5general_auth_data_t p5general_auth_data = {0};
+
 // ---------------------------------------------------------------------------
 // Mount / unmount — self-gates on the dongle VID/PID.
 // ---------------------------------------------------------------------------
