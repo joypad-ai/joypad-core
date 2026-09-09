@@ -93,7 +93,7 @@ Per-profile L2/R2 thresholds control when analog trigger values trigger the digi
 
 ## Keyboard Mode
 
-Toggle keyboard mode by pressing **Scroll Lock** or **F14** on a connected USB keyboard:
+Toggle keyboard mode by pressing **Scroll Lock**, **F14**, or **Ctrl+Alt+K** on a connected USB keyboard:
 
 - All standard HID keys are mapped to GameCube keyboard scancodes via a 256-entry lookup table
 - Reports contain 3 keypresses + checksum + counter

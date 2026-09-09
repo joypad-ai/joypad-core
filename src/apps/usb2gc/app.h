@@ -67,7 +67,8 @@
 // ============================================================================
 #define FEATURE_PROFILES 1              // GameCube profile system
 #define FEATURE_KEYBOARD_MODE 1         // Descriptive only -- gates nothing. Keyboard mode is
-                                        // real, toggled by Scroll Lock / F14 in gamecube_device.c.
+                                        // real, toggled by Scroll Lock, F14 or Ctrl+Alt+K in
+                                        // gamecube_device.c (GC_KB_TOGGLE_* defines).
 #define FEATURE_ADAPTIVE_TRIGGERS 1     // Descriptive only -- gates nothing. The feature is real.
 
 // ============================================================================

@@ -72,7 +72,7 @@ Complete list of supported input devices for Joypad OS adapters.
 
 **All standard USB HID keyboards supported:**
 - Full key mapping to controller buttons
-- GameCube: Dedicated keyboard mode (Scroll Lock/F14)
+- GameCube: Dedicated keyboard mode (Scroll Lock / F14 / Ctrl+Alt+K)
 - Arrow keys → D-Pad
 - WASD → Left stick
 - Space/Enter → Action buttons

@@ -42,7 +42,7 @@ See the [Profiles (Detailed)](#profiles-detailed) section below for full button 
 
 ## Key Features
 
-- **Keyboard mode** -- Toggle with Scroll Lock or F14. Works with PSO and other GC keyboard games.
+- **Keyboard mode** -- Toggle with Scroll Lock, F14, or Ctrl+Alt+K. Works with PSO and other GC keyboard games.
 - **Copilot mode** -- Multiple controllers merge into one output. All inputs OR'd together.
 - **Rumble** -- Forwarded to compatible controllers (Xbox, DualShock 3/4/5, Switch Pro, 8BitDo).
 - **Adaptive triggers** -- DualSense L2/R2 analog mapped to GC L/R with configurable threshold.
@@ -150,6 +150,7 @@ Mario Kart Wii optimized:
 
 **Keyboard mode not activating:**
 - Press Scroll Lock or F14 on the connected USB keyboard.
+- No Scroll Lock and no F13-F24 row (most 65% and TKL boards)? Press **Ctrl+Alt+K** instead.
 - Check the LED indicator for keyboard mode status.
 
 **Stick drift or incorrect calibration:**

@@ -27,7 +27,7 @@ Switch between optimized button mappings for different games:
 
 Use a USB keyboard as a GameCube keyboard:
 
-- Press **Scroll Lock** or **F14** to toggle keyboard mode
+- Press **Scroll Lock**, **F14**, or **Ctrl+Alt+K** to toggle keyboard mode
 - LED indicator shows when active
 - All standard keys mapped to GameCube keyboard protocol
 - Works with Phantasy Star Online and other keyboard-compatible games
@@ -200,6 +200,7 @@ Pin 6: 3.3V (optional, some boards)
 
 **Keyboard mode not activating:**
 - Press Scroll Lock or F14 key
+- No Scroll Lock and no F13-F24 row (most 65% and TKL boards)? Use **Ctrl+Alt+K** instead
 - Check LED indicator
 - Some keyboards may not be compatible
 
